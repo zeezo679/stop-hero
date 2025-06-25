@@ -5,7 +5,7 @@ const FTS = [
 ];
 export default function Footer() {
     return(
-        <footer className="bg-gray-900 text-white px-6 py-4 w-full shadow-md fixed bottom-0 left-0 z-50">
+        <footer className="bg-gray-900 text-white px-6 py-4 w-full shadow-md  bottom-0 left-0 z-50">
             <h1 className="text-center text-sm sm:text-base font-medium">
                 &copy; {new Date().getFullYear()} <span className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-500">Stop Hero</span> . All rights reserved.
             </h1>

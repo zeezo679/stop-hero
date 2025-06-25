@@ -9,7 +9,7 @@ const LTS = [
 export default function Header() {
     const [isOpen, setIsOpen] = useState(false);
     return (
-        <header className="bg-gray-900 text-white px-6 py-4 w-full shadow-md fixed top-0 left-0 z-50">
+        <header className="bg-gray-900 text-white px-6 py-4 w-full shadow-md  z-50">
         <div className="container mx-auto flex items-center justify-between">
             {/* Logo */}
             <h1 className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-500">
