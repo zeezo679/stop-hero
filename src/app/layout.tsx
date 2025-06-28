@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Header from "../header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,8 +29,8 @@ export default function RootLayout({
         <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
       </head>
       <body>
+        <Header />
         {children}
-        
       </body>
     </html>
   );

@@ -1,3 +1,5 @@
+/* Import Inter font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -19,15 +21,70 @@
   }
 }
 
+html, body {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+* {
+  font-family: inherit;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
 }
 .gradiant {
   background: linear-gradient(90deg, rgba(218, 81, 145, 0.8), rgba(90, 89, 89, 0.4), rgba(215, 150, 181, 0.8));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-size: 200% 100%;
+}
+.modern-gradient-bg {
+  background: linear-gradient(180deg, #0a0a0a 0%, #1a1a2e 60%, #23234b 100%);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(6px); }
+  100% { transform: translateX(0); }
+}
+.animate-shake {
+  animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.animate-fade-in {
+  animation: fade-in 0.3s ease-in;
+}
+
+/* Animated background decor keyframes */
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-24px); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(18px); }
+}
+.animate-spin-slow {
+  animation: spin 16s linear infinite;
+}
+.animate-bounce-slow {
+  animation: bounce 7s ease-in-out infinite alternate;
+}
+.animate-float-slow {
+  animation: float 10s ease-in-out infinite alternate;
 }
 
