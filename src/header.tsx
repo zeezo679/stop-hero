@@ -1,10 +1,13 @@
+"use client"
 import { useState } from "react";
+import Link from "next/link";
 
 const LTS = [
     { id: "1", name: "Home", href: "/" },
     { id: "2", name: "About", href: "/about" },
     { id: "3", name: "Contact", href: "/contact" }
 ];
+
 
 export default function Header() {
     const [isOpen, setIsOpen] = useState(false);
@@ -19,13 +22,16 @@ export default function Header() {
             {/* Desktop Nav */}
             <nav className="hidden md:flex">
                 <ul className="flex space-x-6 text-sm sm:text-base font-medium">
-                    {LTS.map(item => (
+                {LTS.map(item => (
                     <li key={item.id}>
-                        <a href={item.href} className="hover:text-purple-400 transition-colors duration-300">
-                        {item.name}
-                        </a>
+                        <Link href={item.href}>
+                        <span className="hover:text-purple-400 transition-colors duration-300">
+                            {item.name}
+                        </span>
+                        </Link>
                     </li>
-                    ))}
+                ))}
+
                 </ul>
             </nav>
 
@@ -41,15 +47,14 @@ export default function Header() {
         {isOpen && (
             <div className="md:hidden bg-gray-800 px-6 py-4 space-y-4">
             {LTS.map(item => (
-                <a
-                key={item.id}
-                href={item.href}
-                onClick={() => setIsOpen(false)}
-                className="block text-white hover:text-purple-400 transition-colors duration-300"
-                >
-                {item.name}
-                </a>
-            ))}
+                    <li key={item.id}>
+                        <Link href={item.href}>
+                        <span className="hover:text-purple-400 transition-colors duration-300">
+                            {item.name}
+                        </span>
+                        </Link>
+                    </li>
+                ))}
             </div>
         )}
         </header>
