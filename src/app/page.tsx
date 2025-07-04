@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from 'react'
 import { supabase } from '../../lib/SupabaseClient';
-import Footer from '.././footer';
 import  Section1  from '.././section1'
 import Section3 from '../section3'
 import Section2 from '../section2'
 import Section4 from '../section4'
+
 
 export default function Home() {
     const [data, setData] = useState<unknown[]>([])
@@ -31,8 +31,6 @@ export default function Home() {
         <Section3 />
         <Section4 />
       </main>
-      {/* footer */}
-      <Footer />
     </div>
   );
 }

@@ -1,6 +1,3 @@
-import Header from "../../header";
-import Footer from "../../footer";
-
 const users = [
     {
         name: "Zeyad",
@@ -23,7 +20,6 @@ const users = [
 export default function About() {
     return (
         <div className="bg-gray-100 min-h-screen flex flex-col justify-between dark:bg-gray-900 text-gray-800 dark:text-gray-100">
-            <Header />
             <section className="flex-grow w-full py-16 px-4 sm:px-8 flex justify-center items-center">
                 <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-8">
                     {users.map((item) => (
@@ -81,10 +77,6 @@ export default function About() {
                     ))}
                 </div>
             </section>
-
-            <footer>
-                <Footer />
-            </footer>
         </div>
     );
 }

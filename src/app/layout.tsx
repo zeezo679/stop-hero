@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "../header";
+import Footer from "@/footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,11 +27,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+        {/* <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" /> */}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/react-live@2.4.2/dist/react-live.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.18.9/babel.min.js"></script>
       </head>
       <body>
         <Header />
         {children}
+        <Footer />
       </body>
     </html>
   );

@@ -1,11 +1,32 @@
+"use client";
+
 import { useState } from "react";
-import Link from "next/link";
 
 const LTS = [
     { id: "1", name: "Home", href: "/" },
     { id: "2", name: "About", href: "/about" },
-    { id: "3", name: "Contact", href: "/contact" }
+    { id: "3", name: "Contact", href: "/contact" },
+    { id: "4", name: "Content", href: "/Contennt" },
+    { id: "5", name: "Live", href: "/live" },
+
 ];
+
+// Lucide LogIn icon SVG
+const LogInIcon = ({ className = "w-6 h-6" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6A2.25 2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M18 12H9m0 0l3-3m-3 3l3 3" />
+  </svg>
+);
+
+// User-plus icon SVG for Register
+const UserPlusIcon = ({ className = "w-6 h-6" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2" />
+    <circle cx="9" cy="7" r="4" stroke="currentColor" strokeWidth={2} />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M17 11h6m-3-3v6" />
+  </svg>
+);
 
 export default function Header() {
     const [isOpen, setIsOpen] = useState(false);
@@ -20,16 +41,13 @@ export default function Header() {
             {/* Desktop Nav */}
             <nav className="hidden md:flex">
                 <ul className="flex space-x-6 text-sm sm:text-base font-medium">
-                {LTS.map(item => (
+                    {LTS.map(item => (
                     <li key={item.id}>
-                        <Link href={item.href}>
-                        <span className="hover:text-purple-400 transition-colors duration-300">
-                            {item.name}
-                        </span>
-                        </Link>
+                        <a href={item.href} className="hover:text-purple-400 transition-colors duration-300">
+                        {item.name}
+                        </a>
                     </li>
-                ))}
-
+                    ))}
                 </ul>
             </nav>
 
@@ -66,6 +84,17 @@ export default function Header() {
                 {item.name}
                 </a>
             ))}
+            {/* Auth Buttons for mobile */}
+            <div className="flex gap-2 mt-2">
+              <a href="/login" title="Sign in to your account" className="flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition shadow-md">
+                <span>Sign In</span>
+                <LogInIcon className="w-6 h-6" />
+              </a>
+              <a href="/register" title="Create new account" className="flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-gradient-to-r from-[#5f2eea] to-[#8257e5] text-white font-semibold shadow-lg transition-all duration-200 hover:scale-105 hover:shadow-purple-400/40 focus:outline-none focus:ring-2 focus:ring-purple-400">
+                <span>Register</span>
+                <UserPlusIcon className="w-6 h-6" />
+              </a>
+            </div>
             </div>
         )}
         </header>
