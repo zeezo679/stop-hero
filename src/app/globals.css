@@ -2,6 +2,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
 @import "tailwindcss";
 
+@layer utilities {
+  .animate-dropdown-in {
+    animation: dropdown-in 0.2s cubic-bezier(0.4,0,0.2,1) forwards;
+  }
+  .animate-dropdown-out {
+    animation: dropdown-out 0.2s cubic-bezier(0.4,0,0.2,1) forwards;
+  }
+  @keyframes dropdown-in {
+    0% { opacity: 0; transform: scaleY(0.8) translateY(-10px); }
+    100% { opacity: 1; transform: scaleY(1) translateY(0); }
+  }
+  @keyframes dropdown-out {
+    0% { opacity: 1; transform: scaleY(1) translateY(0); }
+    100% { opacity: 0; transform: scaleY(0.8) translateY(-10px); }
+  }
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
