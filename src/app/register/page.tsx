@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { supabase } from "../../../lib/SupabaseClient";
 
 const GoogleIcon = () => (
   <svg className="w-5 h-5 mr-2" viewBox="0 0 48 48"><g><path fill="#4285F4" d="M24 9.5c3.54 0 6.7 1.22 9.19 3.23l6.87-6.87C35.64 2.7 30.23 0 24 0 14.82 0 6.73 5.82 2.69 14.09l8.01 6.22C12.36 13.13 17.68 9.5 24 9.5z"/><path fill="#34A853" d="M46.1 24.5c0-1.64-.15-3.22-.43-4.74H24v9.01h12.42c-.54 2.9-2.18 5.36-4.65 7.01l7.19 5.6C43.98 37.13 46.1 31.3 46.1 24.5z"/><path fill="#FBBC05" d="M10.7 28.31c-.5-1.48-.78-3.06-.78-4.81s.28-3.33.78-4.81l-8.01-6.22C1.01 15.7 0 19.71 0 24s1.01 8.3 2.69 11.53l8.01-6.22z"/><path fill="#EA4335" d="M24 48c6.23 0 11.64-2.06 15.53-5.6l-7.19-5.6c-2.01 1.35-4.59 2.15-8.34 2.15-6.32 0-11.64-3.63-13.3-8.81l-8.01 6.22C6.73 42.18 14.82 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></g></svg>
@@ -31,6 +32,7 @@ export default function RegisterPage() {
     confirmPassword: false,
   });
   const [loading, setLoading] = useState(true);
+  const [submitStatus, setSubmitStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 900);
@@ -80,7 +82,7 @@ export default function RegisterPage() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const newTouched = Object.fromEntries(Object.keys(form).map((k) => [k, true])) as typeof touched;
     setTouched(newTouched);
@@ -89,7 +91,39 @@ export default function RegisterPage() {
     ) as typeof errors;
     setErrors(newErrors);
     if (Object.values(newErrors).some((err) => err)) return;
-    // ...register logic...
+    // Register logic: add user to auth.users
+    setSubmitStatus(null);
+    const { data, error } = await supabase.auth.signUp({
+      email: form.email,
+      password: form.password,
+      options: {
+        data: {
+          full_name: form.name,
+          phone: form.phone,
+        },
+      },
+    });
+    if (error) {
+      setSubmitStatus({ type: 'error', message: error.message });
+    } else {
+      setSubmitStatus({ type: 'success', message: 'Registration successful! Please check your email to confirm your account.' });
+    }
+  };
+
+  // Google OAuth handler
+  const handleGoogleSignUp = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: "http://localhost:3000", // change to your actual page in prod
+        queryParams: {
+          prompt: "select_account",
+        },
+      },
+    });
+    if (error) {
+      console.error("Google OAuth error:", error.message);
+    }
   };
 
   return (
@@ -111,6 +145,20 @@ export default function RegisterPage() {
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-1">Here you can Register</h2>
             <p className="text-slate-300 text-sm">Let's join us :)</p>
           </div>
+          {/* Google Sign Up Button */}
+          <button
+            type="button"
+            onClick={handleGoogleSignUp}
+            className="flex items-center gap-2 border border-gray-300 bg-white text-black px-6 py-2 rounded hover:bg-gray-100 shadow mb-6 w-full justify-center"
+          >
+            <img
+              src="https://www.svgrepo.com/show/475656/google-color.svg"
+              alt="Google icon"
+              className="w-5 h-5"
+            />
+            Sign up with Google
+          </button>
+          {/* ...existing form... */}
           <form onSubmit={handleSubmit} className="flex flex-col gap-6" noValidate>
             <div>
               <label htmlFor="name" className="block text-slate-200 mb-1 font-medium">Full Name</label>
@@ -192,6 +240,9 @@ export default function RegisterPage() {
               />
               {errors.confirmPassword && <div id="confirmPassword-error" className="text-red-500 text-xs mt-1 animate-fade-in" role="alert">{errors.confirmPassword}</div>}
             </div>
+            {submitStatus && (
+              <div className={`text-center text-sm font-semibold mt-2 ${submitStatus.type === 'success' ? 'text-green-400' : 'text-red-400'}`}>{submitStatus.message}</div>
+            )}
             <button
               type="submit"
               className="w-full py-2 mt-2 rounded-md bg-gradient-to-r from-[#5f2eea] to-[#8257e5] text-white font-semibold shadow-lg transition-all duration-200 hover:scale-105 hover:shadow-purple-400/40 focus:outline-none focus:ring-2 focus:ring-purple-400 cursor-pointer"
