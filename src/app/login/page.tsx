@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-
+import { useRouter } from "next/navigation";
+import { supabase } from "../../../lib/SupabaseClient"; // Adjust the import path as needed
 const GoogleIcon = () => (
   <svg className="w-5 h-5 mr-2" viewBox="0 0 48 48">
     <g>
@@ -34,6 +35,13 @@ export default function LoginPage() {
   const [passwordError, setPasswordError] = useState("");
   const [touched, setTouched] = useState({ email: false, password: false });
   const [loading, setLoading] = useState(true);
+  const [loginStatus, setLoginStatus] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
+  const [userAvatar, setUserAvatar] = useState<string | null>(null);
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 900);
@@ -73,7 +81,7 @@ export default function LoginPage() {
   };
 
   // On submit, validate all
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setTouched({ email: true, password: true });
     const emailErr = validateEmail(email);
@@ -81,8 +89,54 @@ export default function LoginPage() {
     setEmailError(emailErr);
     setPasswordError(passErr);
     if (emailErr || passErr) return;
-    // ...sign in logic...
+    setLoginStatus(null);
+    // Supabase sign in
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (error) {
+      setLoginStatus({ type: "error", message: error.message });
+    } else if (data?.user) {
+      setLoginStatus({
+        type: "success",
+        message: "Login successful! Redirecting...",
+      });
+      setTimeout(() => router.replace("/"), 1200);
+    } else {
+      setLoginStatus({
+        type: "error",
+        message: "Invalid credentials or user not found.",
+      });
+    }
   };
+
+  // Fetch user profile after login
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (user) {
+        setUserLoggedIn(true);
+        // Fetch profile from 'profiles' table
+        const { data: profile, error } = await supabase
+          .from("profiles")
+          .select("avatar_url")
+          .eq("id", user.id)
+          .single();
+        if (!error && profile?.avatar_url) {
+          setUserAvatar(profile.avatar_url);
+        } else {
+          setUserAvatar(null);
+        }
+      } else {
+        setUserLoggedIn(false);
+        setUserAvatar(null);
+      }
+    };
+    fetchProfile();
+  }, [loginStatus]);
 
   return (
     <div
@@ -99,6 +153,7 @@ export default function LoginPage() {
       {/* Main card */}
       <div className="flex flex-1 items-center justify-center z-10 relative min-h-[calc(100vh-0px)]">
         <div className="w-full max-w-md mx-auto">
+          {/* Removed profile picture/avatar from login form */}
           <div className="mb-8">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-1">
               Here you can Login
@@ -176,6 +231,17 @@ export default function LoginPage() {
                 </div>
               )}
             </div>
+            {loginStatus && (
+              <div
+                className={`text-center text-sm font-semibold mt-2 ${
+                  loginStatus.type === "success"
+                    ? "text-green-400"
+                    : "text-red-400"
+                }`}
+              >
+                {loginStatus.message}
+              </div>
+            )}
             <button
               type="submit"
               className="w-full py-2 mt-2 rounded-md bg-gradient-to-r from-[#5f2eea] to-[#8257e5] text-white font-semibold shadow-lg transition-all duration-200 hover:scale-105 hover:shadow-purple-400/40 focus:outline-none focus:ring-2 focus:ring-purple-400 cursor-pointer"
