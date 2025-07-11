@@ -1,9 +1,9 @@
 import Link from "next/link";
 
 const tracks = [
-    { id: 1, name: "FrontEnd", color: "from-blue-100 to-blue-50", icon: "fas fa-code text-blue-500", },
-    { id: 2, name: "BackEnd", color: "from-green-100 to-green-50", icon: "fas fa-server text-green-500",  },
-    { id: 3, name: "FullStack", color: "from-purple-100 to-pink-100", icon: "fas fa-layer-group text-purple-500", }
+    { id: 1,href:"/traks/Front", name: "FrontEnd", color: "from-blue-100 to-blue-50", icon: "fas fa-code text-blue-500", },
+    { id: 2,href:"/tracks/Front/page", name: "BackEnd", color: "from-green-100 to-green-50", icon: "fas fa-server text-green-500",  },
+    { id: 3,href:"/tracks/Front/page", name: "FullStack", color: "from-purple-100 to-pink-100", icon: "fas fa-layer-group text-purple-500", }
 ];
 
 const courses = [
@@ -110,7 +110,7 @@ export default function Content() {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                     {tracks.map(track => (
                     <Link 
-                        href={`/tracks/${track.name.toLowerCase()}`} 
+                        href={track.href} 
                         key={track.id}
                         className={`group rounded-lg overflow-hidden shadow hover:shadow-lg transition-all duration-300 bg-gradient-to-br ${track.color}`}
                     >
