@@ -6,8 +6,8 @@ export default function Front() {
         id: 1,
         name: "HTML5",
         icon: "fab fa-html5 text-orange-500",
-        description: "The backbone of all web pages"
-        path: "/html"
+        description: "The backbone of all web pages",
+        path: "./htmll"
         },
         {
         id: 2,
